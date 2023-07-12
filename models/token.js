@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Users, {
+      this.belongsTo(models.User, {
         targetKey: "user_id",
         foreignKey: "user_id",
       });
@@ -19,9 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       token_id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
       },
       user_id: {
         allowNull: false,
