@@ -11,7 +11,10 @@ class PostRepository {
         "nickname",
         "createdAt",
         "updatedAt",
-        [Sequelize.fn("COUNT", Sequelize.col("Like.post_id")), "likes"],
+        [
+          Sequelize.literal(`(SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Post.post_id)`),
+          "likes",
+        ],
       ],
       include: [
         {
@@ -20,7 +23,10 @@ class PostRepository {
         },
       ],
       group: ["post_id"],
-      order: [["createdAt", "DESC"]],
+      order: [
+        [Sequelize.literal("likes"), "DESC"],
+        ["createdAt", "DESC"],
+      ],
     });
 
     return getPostAll;
@@ -28,7 +34,25 @@ class PostRepository {
 
   getPostDetail = async (post_id) => {
     const getPostDetail = await Post.findOne({
-      attributes: ["post_id", "user_id", "title", "nickname", "content", "createdAt", "updatedAt"],
+      attributes: [
+        "post_id",
+        "user_id",
+        "title",
+        "nickname",
+        "content",
+        "createdAt",
+        "updatedAt",
+        [
+          Sequelize.literal(`(SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Post.post_id)`),
+          "likes",
+        ],
+      ],
+      include: [
+        {
+          model: Like,
+          attributes: [],
+        },
+      ],
       where: { post_id },
     });
     return getPostDetail;

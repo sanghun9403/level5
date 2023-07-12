@@ -59,7 +59,7 @@ class CommentController {
     }
   };
 
-  deleteCommnet = async (req, res) => {
+  deleteComment = async (req, res) => {
     const { user_id } = res.locals.user;
     const { post_id, comment_id } = req.params;
 
