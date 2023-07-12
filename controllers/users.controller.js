@@ -1,9 +1,9 @@
 const UserService = require("../services/users.service");
 
-class userController {
+class UserController {
   userService = new UserService();
 
-  signup = async (req, res, next) => {
+  signup = async (req, res) => {
     const { email, nickname, password, confirmPassword } = req.body;
     const userData = await this.userService.createUser(email, nickname, password, confirmPassword);
 
@@ -18,7 +18,7 @@ class userController {
       });
   };
 
-  login = async (req, res, next) => {
+  login = async (req, res) => {
     const { email, password } = req.body;
     const findUser = await this.userService.loginUser(email, password, res);
 
@@ -32,10 +32,10 @@ class userController {
       });
   };
 
-  switch = async (req, res, next) => {
+  switch = async (req, res) => {
     try {
-      const { userId } = req.params;
-      const switchUserAccount = await this.userService.switchUser(userId);
+      const { user_id } = req.params;
+      const switchUserAccount = await this.userService.switchUser(user_id, res);
 
       return res.status(200).json({
         message: `${switchUserAccount.nickname} Account로 전환되었습니다.`,
@@ -49,9 +49,9 @@ class userController {
 
   logout = async (req, res) => {
     try {
-      const { userId } = req.params;
+      const { user_id } = req.params;
       const user = res.locals.user;
-      await this.userService.logout(userId);
+      await this.userService.logout(user_id);
 
       return res.status(200).json({
         message: `${user.nickname}님 로그아웃 되었습니다.`,
@@ -64,4 +64,4 @@ class userController {
   };
 }
 
-module.exports = userController;
+module.exports = UserController;
