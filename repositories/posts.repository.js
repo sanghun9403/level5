@@ -45,7 +45,7 @@ class PostRepository {
     return createPost;
   };
 
-  modifyPost = async (title, content, post_id, user_id) => {
+  modifyPost = async (title, content, user_id, post_id) => {
     const modifyPost = await Post.update(
       { title, content },
       { where: { [Op.and]: [{ post_id }, { user_id }] } }
@@ -54,10 +54,10 @@ class PostRepository {
     return modifyPost;
   };
 
-  deletePost = async (post_id, user_id) => {
+  deletePost = async (user_id, post_id) => {
     const deletePost = await Post.destroy({
       where: {
-        [Op.and]: [{ post_id }, { user_id }],
+        [Op.and]: [{ user_id }, { post_id }],
       },
     });
 
