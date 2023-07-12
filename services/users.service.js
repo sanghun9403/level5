@@ -115,12 +115,30 @@ class UserService {
     }
   };
 
-  switchUser = async (userId) => {
-    const switchUserAccount = await this.userRepository.findUserId(userId);
+  switchUser = async (user_id, res) => {
+    const user = await this.userRepository.findUserId(user_id);
+    const switchUserAccount = await this.userRepository.findToken(user_id);
     if (!switchUserAccount) {
       return { code: 404, errorMessage: "존재하지 않는 사용자입니다." };
+    } else {
+      jwt.verify(switchUserAccount.token_id, process.env.JWT_SECRET_KEY);
+
+      await this.userRepository.deleteUserToken(switchUserAccount.user_id);
+      await this.userRepository.saveRefreshToken(
+        switchUserAccount.token_id,
+        switchUserAccount.user_id
+      );
+
+      const accessToken = jwt.sign(
+        { user_id: switchUserAccount.user_id },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: "30s",
+        }
+      );
+      res.cookie("authorization", `Bearer ${accessToken}`);
     }
-    return switchUserAccount;
+    return { switchUserAccount, nickname: user.nickname };
   };
 
   logout = async (user_id) => {
