@@ -19,11 +19,11 @@ class UserService {
       return { code: 412, errorMessage: "이메일 또는 닉네임이 이미 사용중입니다." };
     }
 
-    // 닉네임 생성 조건 검사
-    if (regExp.test(nickname)) {
+    // 이메일 생성 조건 검사
+    if (!regExp.test(email)) {
       return {
         code: 412,
-        errorMessage: "특수문자 및 공백이 사용불가합니다.",
+        errorMessage: "이메일은 특수문자 및 공백이 사용불가합니다.",
       };
     }
 
@@ -142,7 +142,11 @@ class UserService {
   };
 
   logout = async (user_id) => {
-    await this.userRepository.deleteUserToken(user_id);
+    try {
+      await this.userRepository.deleteUserToken(user_id);
+    } catch {
+      return { code: 400, errorMessage: "로그아웃에 실패했습니다." };
+    }
   };
 }
 

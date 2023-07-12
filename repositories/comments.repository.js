@@ -1,8 +1,9 @@
 const { User, Comment } = require("../models");
+const { Op } = require("sequelize");
 
 class CommentRepository {
   getComment = async (post_id) => {
-    const getComment = await Comment.findAll({
+    const comments = await Comment.findAll({
       where: { post_id },
       include: [
         {
@@ -12,7 +13,25 @@ class CommentRepository {
       ],
     });
 
+    const getComment = comments.map((comments) => {
+      return {
+        post_id: comments.post_id,
+        comment_id: comments.comment_id,
+        nickname: comments.User.nickname,
+        comment: comments.comment,
+        createdAt: comments.createdAt,
+        updatedAt: comments.updatedAt,
+      };
+    });
+
     return getComment;
+  };
+
+  commentDetail = async (post_id) => {
+    const comments = await Comment.findOne({
+      where: { post_id },
+    });
+    return comments;
   };
 
   createComment = async (comment, user_id, post_id) => {

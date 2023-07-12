@@ -30,13 +30,12 @@ class PostService {
 
   createPost = async (title, content, user_id, res) => {
     const user = res.locals.user;
-    await this.postRepository.createPost(title, content, user_id, user);
 
     try {
       if (!title || !content) {
         return { code: 412, errorMessage: "제목과 내용을 입력해주세요" };
       }
-      return true;
+      await this.postRepository.createPost(title, content, user_id, user);
     } catch {
       return { code: 400, errorMessage: "게시글 생성에 실패하였습니다." };
     }

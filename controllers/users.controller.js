@@ -12,7 +12,7 @@ class UserController {
         errorMessage: userData.errorMessage,
       });
     else
-      return res.status(201).json({
+      res.status(201).json({
         data: userData,
         message: "회원가입이 완료되었습니다.",
       });
@@ -27,38 +27,38 @@ class UserController {
         errorMessage: findUser.errorMessage,
       });
     else
-      return res.status(201).json({
+      res.status(201).json({
         message: "로그인에 성공했습니다.",
       });
   };
 
   switch = async (req, res) => {
-    try {
-      const { user_id } = req.params;
-      const switchUserAccount = await this.userService.switchUser(user_id, res);
+    const { user_id } = req.params;
+    const switchUserAccount = await this.userService.switchUser(user_id, res);
 
-      return res.status(200).json({
-        message: `${switchUserAccount.nickname} Account로 전환되었습니다.`,
+    if (switchUserAccount.errorMessage) {
+      return res.status(switchUserAccount.code).json({
+        errorMessage: switchUserAccount.errorMessage,
       });
-    } catch (err) {
-      return res.status(400).json({
-        errorMessage: err.message,
+    } else {
+      res.status(200).json({
+        message: `${switchUserAccount.nickname} Account로 전환되었습니다.`,
       });
     }
   };
 
   logout = async (req, res) => {
-    try {
-      const { user_id } = req.params;
-      const user = res.locals.user;
-      await this.userService.logout(user_id);
+    const { user_id } = req.params;
+    const user = res.locals.user;
+    const logout = await this.userService.logout(user_id);
 
-      return res.status(200).json({
-        message: `${user.nickname}님 로그아웃 되었습니다.`,
+    if (logout.errorMessage) {
+      return res.status(logout.code).json({
+        errorMessage: logout.errorMessage,
       });
-    } catch (err) {
-      return res.status(400).json({
-        errorMessage: err.message,
+    } else {
+      res.status(200).json({
+        message: `${user.nickname}님 로그아웃 되었습니다.`,
       });
     }
   };
