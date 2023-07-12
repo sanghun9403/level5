@@ -11,7 +11,7 @@ class PostService {
       }
       return getPost;
     } catch {
-      return { code: 400, errorMessage: "게시글 조회에 실패하였습니다." };
+      return { code: 500, errorMessage: "게시글 조회에 실패하였습니다." };
     }
   };
 
@@ -24,7 +24,7 @@ class PostService {
       }
       return postDetail;
     } catch {
-      return { code: 404, errorMessage: "게시글 조회에 실패하였습니다." };
+      return { code: 500, errorMessage: "게시글 조회에 실패하였습니다." };
     }
   };
 
@@ -37,7 +37,7 @@ class PostService {
       }
       await this.postRepository.createPost(title, content, user_id, user);
     } catch {
-      return { code: 400, errorMessage: "게시글 생성에 실패하였습니다." };
+      return { code: 500, errorMessage: "게시글 생성에 실패하였습니다." };
     }
   };
 
@@ -55,7 +55,7 @@ class PostService {
       await this.postRepository.modifyPost(title, content, user_id, post_id);
       return true;
     } catch {
-      return { code: 400, errorMessage: "게시글 수정에 실패하였습니다." };
+      return { code: 500, errorMessage: "게시글 수정에 실패하였습니다." };
     }
   };
 
@@ -71,7 +71,7 @@ class PostService {
       await this.postRepository.deletePost(user_id, post_id);
       return true;
     } catch {
-      return { code: 400, errorMessage: "게시글 삭제에 실패하였습니다." };
+      return { code: 500, errorMessage: "게시글 삭제에 실패하였습니다." };
     }
   };
 }

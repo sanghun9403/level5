@@ -12,7 +12,7 @@ class CommentService {
       }
       return getComment;
     } catch {
-      return { code: 400, errorMessage: "댓글 조회에 실패하였습니다." };
+      return { code: 500, errorMessage: "댓글 조회에 실패하였습니다." };
     }
   };
 
@@ -24,7 +24,7 @@ class CommentService {
       await this.commentRepository.createComment(comment, user_id, post_id);
       return true;
     } catch {
-      return { code: 400, errorMessage: "댓글 생성에 실패하였습니다." };
+      return { code: 500, errorMessage: "댓글 생성에 실패하였습니다." };
     }
   };
 
@@ -44,7 +44,7 @@ class CommentService {
       await this.commentRepository.modifyComment(comment, comment_id);
       return true;
     } catch {
-      return { code: 400, errorMessage: "댓글 수정에 실패하였습니다." };
+      return { code: 500, errorMessage: "댓글 수정에 실패하였습니다." };
     }
   };
 
@@ -62,7 +62,7 @@ class CommentService {
       await this.commentRepository.deleteComment(comment_id);
       return true;
     } catch {
-      return { code: 400, errorMessage: "댓글 삭제에 실패하였습니다." };
+      return { code: 500, errorMessage: "댓글 삭제에 실패하였습니다." };
     }
   };
 }

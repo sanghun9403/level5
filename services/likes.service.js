@@ -8,7 +8,7 @@ class LikeService {
       const likeFunc = await this.likeRepository.likeFunc(user_id, post_id);
       return { code: 200, message: likeFunc.message, likeCount: likeFunc.likeCount };
     } catch (err) {
-      return { code: 400, errorMessage: "좋아요 생성 실패." };
+      return { code: 500, errorMessage: "좋아요 생성 실패." };
     }
   };
 
@@ -20,7 +20,7 @@ class LikeService {
         return getLikePosts;
       }
     } catch {
-      return { code: 400, errorMessage: "좋아요 게시글 조회에 실패하였습니다." };
+      return { code: 500, errorMessage: "좋아요 게시글 조회에 실패하였습니다." };
     }
   };
 }

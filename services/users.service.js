@@ -111,7 +111,7 @@ class UserService {
         }
       }
     } catch (err) {
-      return { code: 404, errorMessage: "존재하지 않는 아이디 또는 잘못된 접근입니다." };
+      return { code: 500, errorMessage: "잘못된 접근입니다." };
     }
   };
 
@@ -145,7 +145,7 @@ class UserService {
     try {
       await this.userRepository.deleteUserToken(user_id);
     } catch {
-      return { code: 400, errorMessage: "로그아웃에 실패했습니다." };
+      return { code: 500, errorMessage: "로그아웃에 실패했습니다." };
     }
   };
 }
