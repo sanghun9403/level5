@@ -70,7 +70,7 @@ class PostController {
     const { post_id } = req.params;
     const { user_id } = res.locals.user;
 
-    const deletePost = await this.postService.deletePost(post_id, user_id);
+    const deletePost = await this.postService.deletePost(user_id, post_id);
 
     if (deletePost.errorMessage) {
       return res.status(deletePost.code).json({
